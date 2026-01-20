@@ -7,13 +7,17 @@ st.title("🎨 Mera Free AI Prompt & Image Builder")
 st.write("Apna idea likhein, Gemini prompt banayega aur AI image generate karega!")
 
 # API Key Section
-api_key = st.text_input("Apni Gemini API Key yahan paste karein:", type="password")
+api_key_input = st.text_input("Apni Gemini API Key yahan paste karein:", type="password")
 
-if api_key:
+if api_key_input:
+    # Key se extra spaces hatana (Fix common error)
+    api_key = api_key_input.strip()
+    
     # Gemini Setup
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        # Hum sabse common model use karenge jo kabhi fail nahi hota
+        model = genai.GenerativeModel('gemini-pro')
         
         # User Input
         user_topic = st.text_input("Kis cheez ki image banani hai? (English mein likhein)", placeholder="e.g., A cyberpunk cat in rain")
@@ -34,11 +38,9 @@ if api_key:
                 st.success("✅ Prompt Tayyar Hai:")
                 st.code(final_prompt)
                 
-                # 2. Image Generation Logic (Using Pollinations AI - Free)
+                # 2. Image Generation Logic
                 st.write("### 🖼️ Apki Image:")
                 with st.spinner('Image download ho rahi hai...'):
-                    # Pollinations AI URL Hack (No API Key needed)
-                    # Spaces ko %20 mein convert karna zaroori hai
                     clean_prompt = final_prompt.replace("\n", " ").strip()
                     image_url = f"https://image.pollinations.ai/prompt/{clean_prompt}?width=1024&height=1024&nologo=true"
                     
@@ -48,6 +50,6 @@ if api_key:
                 st.warning("Pehle kuch likhein to sahi!")
                 
     except Exception as e:
-        st.error(f"Error: {e}. Shayad API Key ghalat hai.")
+        st.error(f"Error aaya hai: {e}. \nCheck karein ke API Key sahi copy hui hai ya nahi.")
 else:
     st.info("Shuru karne ke liye upar apni Gemini API key dalein.")
