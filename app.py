@@ -13,7 +13,7 @@ if api_key:
     # Gemini Setup
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         
         # User Input
         user_topic = st.text_input("Kis cheez ki image banani hai? (English mein likhein)", placeholder="e.g., A cyberpunk cat in rain")
